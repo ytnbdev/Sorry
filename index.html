@@ -3,13 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ごめん / もうやだ</title>
+  <title>気持ちボタン</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       min-height: 100vh;
@@ -17,105 +13,65 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #1a1a2e;
+      padding: 2rem 1rem;
+      background: #0f0f1a;
       font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
-      overflow: hidden;
     }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
+    h1 {
+      color: rgba(255,255,255,0.2);
+      font-size: 0.85rem;
+      letter-spacing: 0.4em;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
     }
 
-    .buttons-row {
+    .grid {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 3rem;
       flex-wrap: wrap;
       justify-content: center;
+      gap: 1.8rem;
+      max-width: 860px;
     }
 
     .btn-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
-    }
-
-    .message {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 0.2em;
+      gap: 0.6rem;
     }
 
     .btn {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       border: none;
       color: white;
-      font-size: 2.5rem;
       font-weight: bold;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      transition: transform 0.1s ease;
       outline: none;
       user-select: none;
+      overflow: hidden;
+      line-height: 1.4;
+      padding: 0.5rem;
     }
+    .btn:hover  { transform: scale(1.07); }
+    .btn:active { transform: scale(0.93); }
 
-    .btn:hover  { transform: scale(1.05); }
-    .btn:active { transform: scale(0.95); }
+    .btn[data-len="short"] { font-size: 1.9rem; }
+    .btn[data-len="mid"]   { font-size: 1.3rem; }
+    .btn[data-len="long"]  { font-size: 1.05rem; }
+    .btn[data-len="xlong"] { font-size: 0.85rem; }
 
-    /* ごめん — pink */
-    .btn--gomen {
-      background: linear-gradient(135deg, #e91e8c, #c0392b);
-      box-shadow:
-        0 0 0 0 rgba(233, 30, 140, 0.4),
-        0 8px 32px rgba(233, 30, 140, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-    .btn--gomen:hover {
-      box-shadow:
-        0 0 0 0 rgba(233, 30, 140, 0.4),
-        0 12px 40px rgba(233, 30, 140, 0.5),
-        0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-    .btn--gomen.speaking {
-      animation: pulse-gomen 0.8s ease-out infinite;
-    }
+    .btn.speaking { animation: pulse-ring 0.8s ease-out infinite; }
 
-    /* もうやだ — indigo */
-    .btn--mada {
-      background: linear-gradient(135deg, #5c6bc0, #283593);
-      box-shadow:
-        0 0 0 0 rgba(92, 107, 192, 0.4),
-        0 8px 32px rgba(92, 107, 192, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-    .btn--mada:hover {
-      box-shadow:
-        0 0 0 0 rgba(92, 107, 192, 0.4),
-        0 12px 40px rgba(92, 107, 192, 0.5),
-        0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-    .btn--mada.speaking {
-      animation: pulse-mada 0.8s ease-out infinite;
-    }
-
-    @keyframes pulse-gomen {
-      0%   { box-shadow: 0 0 0 0   rgba(233, 30, 140, 0.6), 0 8px 32px rgba(233, 30, 140, 0.3), 0 2px 8px rgba(0,0,0,0.4); }
-      70%  { box-shadow: 0 0 0 30px rgba(233, 30, 140, 0),  0 8px 32px rgba(233, 30, 140, 0.3), 0 2px 8px rgba(0,0,0,0.4); }
-      100% { box-shadow: 0 0 0 0   rgba(233, 30, 140, 0),   0 8px 32px rgba(233, 30, 140, 0.3), 0 2px 8px rgba(0,0,0,0.4); }
-    }
-
-    @keyframes pulse-mada {
-      0%   { box-shadow: 0 0 0 0   rgba(92, 107, 192, 0.6), 0 8px 32px rgba(92, 107, 192, 0.3), 0 2px 8px rgba(0,0,0,0.4); }
-      70%  { box-shadow: 0 0 0 30px rgba(92, 107, 192, 0),  0 8px 32px rgba(92, 107, 192, 0.3), 0 2px 8px rgba(0,0,0,0.4); }
-      100% { box-shadow: 0 0 0 0   rgba(92, 107, 192, 0),   0 8px 32px rgba(92, 107, 192, 0.3), 0 2px 8px rgba(0,0,0,0.4); }
+    @keyframes pulse-ring {
+      0%   { box-shadow: var(--shadow-base), 0 0 0 0   var(--pulse-color); }
+      70%  { box-shadow: var(--shadow-base), 0 0 0 28px transparent; }
+      100% { box-shadow: var(--shadow-base), 0 0 0 0   transparent; }
     }
 
     .ripple-container {
@@ -125,79 +81,143 @@
       overflow: hidden;
       pointer-events: none;
     }
-
     .ripple {
       position: absolute;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255,255,255,0.28);
+      width: 50px; height: 50px;
+      left: 50px; top: 50px;
       transform: scale(0);
-      animation: ripple-effect 0.5s ease-out forwards;
+      animation: ripple-anim 0.5s ease-out forwards;
+    }
+    @keyframes ripple-anim {
+      to { transform: scale(4.5); opacity: 0; }
     }
 
-    @keyframes ripple-effect {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
+    .label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.2em;
     }
 
-    .subtitle {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.25);
-      letter-spacing: 0.3em;
-    }
+    /* ── colors ─────────────────────────────── */
+    .c-pink    { background: linear-gradient(135deg,#e91e8c,#c0392b); --shadow-base: 0 6px 28px rgba(233,30,140,0.35); --pulse-color: rgba(233,30,140,0.5); box-shadow: var(--shadow-base); }
+    .c-indigo  { background: linear-gradient(135deg,#5c6bc0,#283593); --shadow-base: 0 6px 28px rgba(92,107,192,0.35); --pulse-color: rgba(92,107,192,0.5); box-shadow: var(--shadow-base); }
+    .c-teal    { background: linear-gradient(135deg,#26a69a,#00695c); --shadow-base: 0 6px 28px rgba(38,166,154,0.35); --pulse-color: rgba(38,166,154,0.5); box-shadow: var(--shadow-base); }
+    .c-orange  { background: linear-gradient(135deg,#ff7043,#bf360c); --shadow-base: 0 6px 28px rgba(255,112,67,0.35);  --pulse-color: rgba(255,112,67,0.5);  box-shadow: var(--shadow-base); }
+    .c-purple  { background: linear-gradient(135deg,#ab47bc,#6a1b9a); --shadow-base: 0 6px 28px rgba(171,71,188,0.35); --pulse-color: rgba(171,71,188,0.5); box-shadow: var(--shadow-base); }
+    .c-red     { background: linear-gradient(135deg,#ef5350,#b71c1c); --shadow-base: 0 6px 28px rgba(239,83,80,0.35);  --pulse-color: rgba(239,83,80,0.5);  box-shadow: var(--shadow-base); }
+    .c-amber   { background: linear-gradient(135deg,#ffca28,#e65100); --shadow-base: 0 6px 28px rgba(255,202,40,0.3);  --pulse-color: rgba(255,202,40,0.5);  box-shadow: var(--shadow-base); }
+    .c-slate   { background: linear-gradient(135deg,#78909c,#263238); --shadow-base: 0 6px 28px rgba(120,144,156,0.35);--pulse-color: rgba(120,144,156,0.5); box-shadow: var(--shadow-base); }
+    .c-brown   { background: linear-gradient(135deg,#a1887f,#4e342e); --shadow-base: 0 6px 28px rgba(161,136,127,0.35);--pulse-color: rgba(161,136,127,0.5); box-shadow: var(--shadow-base); }
+    .c-green   { background: linear-gradient(135deg,#66bb6a,#1b5e20); --shadow-base: 0 6px 28px rgba(102,187,106,0.35);--pulse-color: rgba(102,187,106,0.5); box-shadow: var(--shadow-base); }
+    .c-gold    { background: linear-gradient(135deg,#ffd54f,#f57f17); --shadow-base: 0 6px 28px rgba(255,213,79,0.3);  --pulse-color: rgba(255,213,79,0.5);  box-shadow: var(--shadow-base); }
   </style>
 </head>
 <body>
-  <div class="container">
-    <p class="message">ボタンを押してください</p>
-    <div class="buttons-row">
-      <div class="btn-wrap">
-        <button class="btn btn--gomen" onclick="say(this, 'ごめんなさい')">
-          ごめん
-          <div class="ripple-container"></div>
-        </button>
-        <p class="subtitle">ごめんなさい</p>
-      </div>
-      <div class="btn-wrap">
-        <button class="btn btn--mada" onclick="say(this, 'もうやだ！')">
-          もうやだ
-          <div class="ripple-container"></div>
-        </button>
-        <p class="subtitle">もうやだ！</p>
-      </div>
+  <h1>ボタンを押してください</h1>
+  <div class="grid">
+
+    <div class="btn-wrap">
+      <button class="btn c-pink" data-len="short" onclick="say(this,'ごめんなさい')">
+        ごめん<div class="ripple-container"></div>
+      </button>
+      <span class="label">ごめんなさい</span>
     </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-indigo" data-len="short" onclick="say(this,'もうやだ！')">
+        もうやだ<div class="ripple-container"></div>
+      </button>
+      <span class="label">もうやだ！</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-teal" data-len="mid" onclick="say(this,'疲れました')">
+        疲れました<div class="ripple-container"></div>
+      </button>
+      <span class="label">疲れました</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-orange" data-len="mid" onclick="say(this,'恐縮です')">
+        恐縮です<div class="ripple-container"></div>
+      </button>
+      <span class="label">恐縮です</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-purple" data-len="long" onclick="say(this,'おみそれしました')">
+        おみそれ<br>しました<div class="ripple-container"></div>
+      </button>
+      <span class="label">おみそれしました</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-red" data-len="xlong" onclick="say(this,'大変申し訳御座いません')">
+        大変申し訳<br>御座いません<div class="ripple-container"></div>
+      </button>
+      <span class="label">大変申し訳御座いません</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-amber" data-len="mid" onclick="say(this,'恐れ入ります')">
+        恐れ入ります<div class="ripple-container"></div>
+      </button>
+      <span class="label">恐れ入ります</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-slate" data-len="long" onclick="say(this,'顔向けができません')">
+        顔向けが<br>できません<div class="ripple-container"></div>
+      </button>
+      <span class="label">顔向けができません</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-brown" data-len="long" onclick="say(this,'すみませんでした')">
+        すみません<br>でした<div class="ripple-container"></div>
+      </button>
+      <span class="label">すみませんでした</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-green" data-len="mid" onclick="say(this,'許してください')">
+        許してください<div class="ripple-container"></div>
+      </button>
+      <span class="label">許してください</span>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn c-gold" data-len="long" onclick="say(this,'ありがとうございます')">
+        ありがとう<br>ございます<div class="ripple-container"></div>
+      </button>
+      <span class="label">ありがとうございます</span>
+    </div>
+
   </div>
 
   <script>
     function say(btn, text) {
       addRipple(btn);
-
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ja-JP';
-        utterance.rate = 0.9;
-        utterance.pitch = 1.1;
-
-        utterance.onstart = () => btn.classList.add('speaking');
-        utterance.onend = () => btn.classList.remove('speaking');
-        utterance.onerror = () => btn.classList.remove('speaking');
-
-        window.speechSynthesis.speak(utterance);
-      }
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ja-JP';
+      u.rate = 0.9;
+      u.pitch = 1.1;
+      u.onstart = () => btn.classList.add('speaking');
+      u.onend   = () => btn.classList.remove('speaking');
+      u.onerror  = () => btn.classList.remove('speaking');
+      window.speechSynthesis.speak(u);
     }
 
     function addRipple(btn) {
-      const container = btn.querySelector('.ripple-container');
-      const ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      ripple.style.width = ripple.style.height = '50px';
-      ripple.style.left = '75px';
-      ripple.style.top = '75px';
-      container.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
+      const c = btn.querySelector('.ripple-container');
+      const r = document.createElement('span');
+      r.className = 'ripple';
+      c.appendChild(r);
+      setTimeout(() => r.remove(), 600);
     }
   </script>
 </body>
