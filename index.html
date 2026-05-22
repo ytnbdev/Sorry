@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ごめん</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a2e;
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .message {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.2em;
+    }
+
+    .btn {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #e91e8c, #c0392b);
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 0 rgba(233, 30, 140, 0.4),
+        0 8px 32px rgba(233, 30, 140, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      outline: none;
+      user-select: none;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 0 0 rgba(233, 30, 140, 0.4),
+        0 12px 40px rgba(233, 30, 140, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow:
+        0 0 0 0 rgba(233, 30, 140, 0.4),
+        0 4px 16px rgba(233, 30, 140, 0.3),
+        0 1px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn.speaking {
+      animation: pulse 0.8s ease-out infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow:
+          0 0 0 0 rgba(233, 30, 140, 0.6),
+          0 8px 32px rgba(233, 30, 140, 0.3),
+          0 2px 8px rgba(0, 0, 0, 0.4);
+      }
+      70% {
+        box-shadow:
+          0 0 0 30px rgba(233, 30, 140, 0),
+          0 8px 32px rgba(233, 30, 140, 0.3),
+          0 2px 8px rgba(0, 0, 0, 0.4);
+      }
+      100% {
+        box-shadow:
+          0 0 0 0 rgba(233, 30, 140, 0),
+          0 8px 32px rgba(233, 30, 140, 0.3),
+          0 2px 8px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    .ripple-container {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      animation: ripple-effect 0.5s ease-out forwards;
+    }
+
+    @keyframes ripple-effect {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.3em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p class="message">ボタンを押してください</p>
+    <button class="btn" id="gomenBtn" onclick="sayGomen(this)">
+      ごめん
+      <div class="ripple-container" id="rippleContainer"></div>
+    </button>
+    <p class="subtitle">ごめんなさい</p>
+  </div>
+
+  <script>
+    function sayGomen(btn) {
+      addRipple(btn);
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance('ごめんなさい');
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+
+        utterance.onstart = () => btn.classList.add('speaking');
+        utterance.onend = () => btn.classList.remove('speaking');
+        utterance.onerror = () => btn.classList.remove('speaking');
+
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function addRipple(btn) {
+      const container = document.getElementById('rippleContainer');
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      ripple.style.width = ripple.style.height = '50px';
+      ripple.style.left = '75px';
+      ripple.style.top = '75px';
+      container.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    }
+  </script>
+</body>
+</html>
